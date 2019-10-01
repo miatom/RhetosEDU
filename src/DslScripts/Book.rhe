@@ -1,0 +1,60 @@
+Module BookStore
+{
+    Entity Book
+    {
+       ShortString Code { Autocode; }
+       ShortString Title;
+       Integer NumberOfPages;
+       ItemFilter CommonMisspelling 'book => book.Title.Contains("curiousity")';
+       InvalidData CommonMisspelling 'It is not allowed to enter misspelled word "curiousity".';
+
+       Reference Author BookStore.Person;
+    }
+
+    Entity Person 
+    {
+        ShortString Name;
+
+    }
+
+    Entity Comment 
+    {
+        Reference Book { Detail; }
+        LongString Text;
+
+    }
+
+    Entity ChildrenBook
+    {
+        Extends BookStore.Book;
+        Integer AgeFrom;
+        Integer AgeTo;
+    }
+
+    Entity ForeignBook
+    {
+        Extends BookStore.Book;
+        ShortString OriginalLanguage;
+        Reference Translator BookStore.Person;
+    }
+
+    Entity Book
+    {
+        ShortString Code { Unique; Required; }
+        ShortString Title { Required; }
+        Integer NumberOfPages;
+        Reference Author Bookstore.Person;
+    }
+
+    Entity Person
+    {
+        ShortString Name;
+    }
+
+    Entity Comment
+    {
+        Reference Book { Detail; }
+        LongString Text;
+    }
+
+}
