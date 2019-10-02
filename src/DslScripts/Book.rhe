@@ -21,7 +21,7 @@
 //Extends BookStore.ChildrenBook BookStore.Book;
 //Integer BookStore.ChildrenBook.AgeFrom;
 //Integer BookStore.ChildrenBook.AgeTo;
-//IntegerRange BookStore.ChildrenBook.AgeFrom BookStore.ChildrenBook.AgeTo; // A simple validation.
+//IntegerRange BookStore.ChildrenBook.AgeFrom AgeTo; // A simple validation.
 
 //Entity BookStore.ForeignBook;
 //Extends BookStore.ForeignBook BookStore.Book;
@@ -36,7 +36,7 @@
 //Detail BookStore.BookTopic.Book;
 //Reference BookStore.BookTopic.Topic BookStore.Topic;
 //Required BookStore.BookTopic.Topic;
-//UniqueMultiple 'BookStore.Book BookStore.Topic';
+//UniqueMultiple BookStore.BookTopic.'Book Topic';
 
 Module Bookstore
 {
@@ -91,5 +91,4 @@ Module Bookstore
    
    
 }
-
 
