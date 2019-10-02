@@ -28,6 +28,16 @@
 //ShortString BookStore.ForeignBook.OriginalLanguage;
 //Reference BookStore.ForeignBook.Translator BookStore.Person;
 
+//Entity BookStore.Topic;
+//ShortString BookStore.Topic.Name;
+
+//Entity BookStore.BookTopic;
+//Reference BookStore.BookTopic.Book BookStore.Book;
+//Detail BookStore.BookTopic.Book;
+//Reference BookStore.BookTopic.Topic BookStore.Topic;
+//Required BookStore.BookTopic.Topic;
+//UniqueMultiple 'BookStore.Book BookStore.Topic';
+
 Module Bookstore
 {
     Entity Book
