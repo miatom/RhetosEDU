@@ -1,60 +1,28 @@
-Module BookStore
-{
-    Entity Book
-    {
-       ShortString Code { Autocode; }
-       ShortString Title;
-       Integer NumberOfPages;
-       ItemFilter CommonMisspelling 'book => book.Title.Contains("curiousity")';
-       InvalidData CommonMisspelling 'It is not allowed to enter misspelled word "curiousity".';
+Module BookStore;
+Entity BookStore.Book;
+ShortString BookStore.Book.Code; 
+Autocode BookStore.Book.Code;
+ShortString BookStore.Book.Title;
+Integer  BookStore.Book.NumberOfPages;
+Integer BookStore.Book.NumberOfPages;
+ItemFilter BookStore.Book.CommonMisspelling 'book => book.Title.Contains("curiousity")';
+InvalidData BookStore.Book.CommonMisspelling 'It is not allowed to enter misspelled word "curiousity".';
+Reference BookStore.Book.Author BookStore.Person;
 
-       Reference Author BookStore.Person;
-    }
+Entity BookStore.Person;
+ShortString BookStore.Person.Name; 
 
-    Entity Person 
-    {
-        ShortString Name;
+Entity BookStore.Comment; 
+Reference BookStore.Comment.Book BookStore.Book; 
+Detail  BookStore.Comment.Book;
+LongString BookStore.Comment.Text;
 
-    }
+Entity BookStore.ChildrenBook;
+Extends BookStore.ChildrenBook BookStore.Book;
+Integer BookStore.ChildrenBook.AgeFrom;
+Integer BookStore.ChildrenBook.AgeTo;
 
-    Entity Comment 
-    {
-        Reference Book { Detail; }
-        LongString Text;
-
-    }
-
-    Entity ChildrenBook
-    {
-        Extends BookStore.Book;
-        Integer AgeFrom;
-        Integer AgeTo;
-    }
-
-    Entity ForeignBook
-    {
-        Extends BookStore.Book;
-        ShortString OriginalLanguage;
-        Reference Translator BookStore.Person;
-    }
-
-    Entity Book
-    {
-        ShortString Code { Unique; Required; }
-        ShortString Title { Required; }
-        Integer NumberOfPages;
-        Reference Author Bookstore.Person;
-    }
-
-    Entity Person
-    {
-        ShortString Name;
-    }
-
-    Entity Comment
-    {
-        Reference Book { Detail; }
-        LongString Text;
-    }
-
-}
+Entity BookStore.ForeignBook;
+Extends BookStore.ForeignBook BookStore.Book;
+ShortString BookStore.ForeignBook.OriginalLanguage;
+Reference BookStore.ForeignBook.Translator BookStore.Person;
