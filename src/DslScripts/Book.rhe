@@ -42,10 +42,12 @@ Module Bookstore
 {
     Entity Book
     {
-        ShortString Code { Unique; Required; }
+        ShortString Code { Autocode; }
         ShortString Title { Required; }
-        Integer NumberOfPages;
+        Integer NumberOfPages { MinValue 10; MaxValue 2000;}
+        DateTime CreatedAt { CreationTime; }
         Reference Author Bookstore.Person;
+        
     }
 
     Entity Person
@@ -86,6 +88,31 @@ Module Bookstore
         Reference Topic { Required; }
 
         UniqueMultiple 'Book Topic';
+    }
+
+    Browse TitlesAndAuthors Bookstore.Book
+    {
+        Take Title;
+        Take 'Author.Name';
+        Take TranslatorName 'Extension_ForeignBook.Translator.Name';
+    }
+
+    SqlQueryable BookInfo 
+    "
+        SELECT
+            b.ID,
+            NumberOfComments = COUNT(c.ID)
+        FROM
+            Bookstore.Book b
+            LEFT JOIN Bookstore.Comment c ON c.BookID = b.ID
+        GROUP BY
+            b.ID
+    "
+    {
+        Extends Bookstore.Book;
+        Integer NumberOfComments;
+
+        AutodetectSqlDependencies;
     }
 
    
