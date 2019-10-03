@@ -135,7 +135,7 @@ Module Bookstore
 
     SqlQueryable BookInfoTopics
     "
-        SELECT bt.BookID, b.Title, COUNT(t.ID) as NumberOfTopics
+        SELECT bt.BookID, b.Title, NumberOfTopics = COUNT(t.ID)  
         FROM BookStore.BookTopic bt 
         INNER JOIN BookStore.Book b ON b.ID = bt.BookID
         INNER JOIN BookStore.Topic t ON t.ID = bt.TopicID
@@ -146,6 +146,16 @@ Module Bookstore
         Integer NumberOfTopics;
 
         AutodetectSqlDependencies;
+    }
+
+    Browse BooksWithTopics Bookstore.Book
+    {
+        Take Title;
+        Take NumberOfPages;
+        Take CreatedAt;
+        Take 'Author.Name';
+        Take BookTopics 'Extension_BookInfoTopics.NumberOfTopics';
+
     }
 
 
