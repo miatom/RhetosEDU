@@ -135,11 +135,11 @@ Module Bookstore
 
     SqlQueryable BookInfoTopics
     "
-        SELECT bt.BookID, b.Title, NumberOfTopics = COUNT(t.ID)  
-        FROM BookStore.BookTopic bt 
-        LEFT JOIN BookStore.Book b ON b.ID = bt.BookID
-        LEFT JOIN BookStore.Topic t ON t.ID = bt.TopicID
-        GROUP BY bt.BookID, b.Title
+        SELECT b.ID, b.Title, NumberOfTopics = COUNT(bt.TopicID)  
+        FROM BookStore.Book b
+        LEFT JOIN BookStore.BookTopic bt ON b.ID = bt.BookID
+        
+        GROUP BY b.ID, b.Title
     "
     {
         Extends Bookstore.Book;
@@ -154,11 +154,8 @@ Module Bookstore
         Take NumberOfPages;
         Take CreatedAt;
         Take 'Author.Name';
-        Take 'Extension_BookInfoTopics.NumberOfTopics';
+        Take NumberOfTopics 'Extension_BookInfoTopics.NumberOfTopics';
     }
-
-
-   
    
 }
 
