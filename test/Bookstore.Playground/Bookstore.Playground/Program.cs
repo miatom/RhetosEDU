@@ -42,12 +42,19 @@ namespace Bookstore.Playground
                 var authors = repository.Bookstore.Person.Load();
 
                 // left join
-                var result = from book in books
-                             join author in authors on book.AuthorID equals author.ID into bookAuthor
-                             from subAuthor in bookAuthor.DefaultIfEmpty()
-                             select new { book.Title, AuthorName = subAuthor?.Name ?? "" }.Dump();
+                //var result = from book in books
+                //             join author in authors on book.AuthorID equals author.ID into bookAuthor
+                //             from subAuthor in bookAuthor.DefaultIfEmpty()
+                //             select new { book.Title, AuthorName = subAuthor?.Name ?? "" }.Dump();
                 // inner join
                 var booksWithAuthors = books.Join(repository.Bookstore.Person.Load(), currentBook => currentBook.AuthorID, author => author.ID, (currentBook, author) => new { currentBook.Title, author.Name }).Dump();
+
+                // with load
+                var booksAndAuthors = books.Select(b => new
+                {
+                    b.Title,
+                    repository.Bookstore.Person.Load(new Guid[] { b.AuthorID ?? Guid.Empty }).SingleOrDefault()?.Name
+                }).Dump();
 
                 //Query
                 var booksWithAuthorsQuery = repository.Bookstore.Book.Query().Select(b => new { b.Title, b.Author.Name }).Dump();
