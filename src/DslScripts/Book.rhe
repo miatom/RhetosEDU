@@ -42,11 +42,14 @@ Module Bookstore
 {
     Entity Book
     {
-        ShortString Code { Autocode; }
+        ShortString Code { AutoCode; }
         ShortString Title { Required; }
         Integer NumberOfPages { MinValue 10; MaxValue 2000;}
-        DateTime CreatedAt { CreationTime; }
+        DateTime CreatedAt { CreationTime;  DenyUserEdit; }
         Reference Author Bookstore.Person;
+
+        ItemFilter ContainsLockMark 'item => item.Title.Contains("Croatian")';
+        Lock ContainsLockMark 'Name contains lock mark.';
         
     }
 
@@ -75,6 +78,8 @@ Module Bookstore
 
         ShortString OriginalLanguage;
         Reference Translator Bookstore.Person;
+
+       
     }
 
     Entity Topic
