@@ -67,7 +67,8 @@ Module Bookstore
     Entity Comment
     {
         Reference Book { Detail; }
-        LongString Text;
+        LongString Text { DefaultValue 'item => "comment"'; }
+        DateTime ModifiedAt { ModificationTimeOf Bookstore.Comment.Text; }
 
         Logging 
         {
