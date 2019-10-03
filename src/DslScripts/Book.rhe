@@ -137,8 +137,8 @@ Module Bookstore
     "
         SELECT bt.BookID, b.Title, NumberOfTopics = COUNT(t.ID)  
         FROM BookStore.BookTopic bt 
-        INNER JOIN BookStore.Book b ON b.ID = bt.BookID
-        INNER JOIN BookStore.Topic t ON t.ID = bt.TopicID
+        LEFT JOIN BookStore.Book b ON b.ID = bt.BookID
+        LEFT JOIN BookStore.Topic t ON t.ID = bt.TopicID
         GROUP BY bt.BookID, b.Title
     "
     {
@@ -154,7 +154,7 @@ Module Bookstore
         Take NumberOfPages;
         Take CreatedAt;
         Take 'Author.Name';
-        Take BookTopics 'Extension_BookInfoTopics.NumberOfTopics';
+        Take 'Extension_BookInfoTopics.NumberOfTopics';
 
     }
 
