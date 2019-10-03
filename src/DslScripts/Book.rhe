@@ -50,6 +50,12 @@ Module Bookstore
 
         ItemFilter ContainsLockMark 'item => item.Title.Contains("Croatian")';
         Lock ContainsLockMark 'Name contains lock mark.';
+
+        Logging 
+        {
+            Log Bookstore.Book.Title;
+            Log Bookstore.Book.NumberOfPages;
+        }
         
     }
 
@@ -62,6 +68,11 @@ Module Bookstore
     {
         Reference Book { Detail; }
         LongString Text;
+
+        Logging 
+        {
+            AllProperties;
+        }
     }
     Entity ChildrensBook
     {
