@@ -34,6 +34,7 @@ namespace Bookstore.Playground
                 var booksWithComments = repository.Bookstore.Comment.Query().Where(c => c.BookID != null).ToString();
 
                 repository.Bookstore.Book.Insert(new Bookstore.Book { Title = "new book", NumberOfPages = 201, Code = "A+" });
+            
 
                 // Query data from the `Common.Claim` table:
 
