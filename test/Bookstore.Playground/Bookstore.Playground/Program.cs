@@ -52,6 +52,12 @@ namespace Bookstore.Playground
                 //Query
                 var booksWithAuthorsQuery = repository.Bookstore.Book.Query().Select(b => new { b.Title, b.Author.Name }).Dump();
 
+                //ToString
+                var booksWithAuthorsSqlQuery = repository.Bookstore.Book.Query().Select(b => new { b.Title, b.Author.Name }).ToString().Dump();
+
+
+
+
 
                 // Query data from the `Common.Claim` table:
 
