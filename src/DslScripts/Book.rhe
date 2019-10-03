@@ -42,21 +42,39 @@ Module Bookstore
 {
     Entity Book
     {
-        ShortString Code { Unique; Required; }
+        ShortString Code { AutoCode; }
         ShortString Title { Required; }
-        Integer NumberOfPages;
+        Integer NumberOfPages { MinValue 10; MaxValue 2000;}
+        DateTime CreatedAt { CreationTime;  DenyUserEdit; }
         Reference Author Bookstore.Person;
+
+        ItemFilter ContainsLockMark 'item => item.Title.Contains("Croatian")';
+        Lock ContainsLockMark 'Name contains lock mark.';
+
+        Logging 
+        {
+            Log Bookstore.Book.Title;
+            Log Bookstore.Book.NumberOfPages;
+        }
+        
     }
 
     Entity Person
     {
         ShortString Name;
+        Deactivatable;
     }
 
     Entity Comment
     {
         Reference Book { Detail; }
-        LongString Text;
+        LongString Text { DefaultValue 'item => "comment"'; }
+        DateTime ModifiedAt { ModificationTimeOf Bookstore.Comment.Text; }
+
+        Logging 
+        {
+            AllProperties;
+        }
     }
     Entity ChildrensBook
     {
@@ -73,6 +91,8 @@ Module Bookstore
 
         ShortString OriginalLanguage;
         Reference Translator Bookstore.Person;
+
+       
     }
 
     Entity Topic
@@ -88,7 +108,54 @@ Module Bookstore
         UniqueMultiple 'Book Topic';
     }
 
-   
+    Browse TitlesAndAuthors Bookstore.Book
+    {
+        Take Title;
+        Take 'Author.Name';
+        Take TranslatorName 'Extension_ForeignBook.Translator.Name';
+    }
+
+    SqlQueryable BookInfo 
+    "
+        SELECT
+            b.ID,
+            NumberOfComments = COUNT(c.ID)
+        FROM
+            Bookstore.Book b
+            LEFT JOIN Bookstore.Comment c ON c.BookID = b.ID
+        GROUP BY
+            b.ID
+    "
+    {
+        Extends Bookstore.Book;
+        Integer NumberOfComments;
+
+        AutodetectSqlDependencies;
+    }
+
+    SqlQueryable BookInfoTopics
+    "
+        SELECT b.ID, b.Title, NumberOfTopics = COUNT(bt.TopicID)  
+        FROM BookStore.Book b
+        LEFT JOIN BookStore.BookTopic bt ON b.ID = bt.BookID
+        
+        GROUP BY b.ID, b.Title
+    "
+    {
+        Extends Bookstore.Book;
+        Integer NumberOfTopics;
+
+        AutodetectSqlDependencies;
+    }
+
+    Browse BooksWithTopics Bookstore.Book
+    {
+        Take Title;
+        Take NumberOfPages;
+        Take CreatedAt;
+        Take 'Author.Name';
+        Take NumberOfTopics 'Extension_BookInfoTopics.NumberOfTopics';
+    }
    
 }
 
