@@ -155,7 +155,6 @@ Module Bookstore
         Take CreatedAt;
         Take 'Author.Name';
         Take 'Extension_BookInfoTopics.NumberOfTopics';
-
     }
 
 

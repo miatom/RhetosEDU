@@ -23,10 +23,10 @@ namespace Bookstore.Playground
                 var context = container.Resolve<Common.ExecutionContext>();
                 var repository = context.Repository;
 
-                var allBooks = repository.Bookstore.Book.Load(t => t.NumberOfPages > 200).Dump();
-                var someBooks = repository.Bookstore.Book.Query().ToSimple().Dump();
+                //var allBooks = repository.Bookstore.Book.Load(t => t.NumberOfPages > 200).Dump();
+                //var someBooks = repository.Bookstore.Book.Query().ToSimple().Dump();
 
-                var book = repository.Bookstore.Book.Query(new[] { new Guid("8FCD6DAA-27F1-4ABB-9556-5E0C74BA00F0") }).ToSimple();
+                //var book = repository.Bookstore.Book.Query(new[] { new Guid("8FCD6DAA-27F1-4ABB-9556-5E0C74BA00F0") }).ToSimple();
 
                 var filter = new FilterCriteria("Title", "StartsWith", "osi");
                 var filteredBook = repository.Bookstore.Book.Query(filter);
@@ -34,7 +34,24 @@ namespace Bookstore.Playground
                 var booksWithComments = repository.Bookstore.Comment.Query().Where(c => c.BookID != null).ToString();
 
                 repository.Bookstore.Book.Insert(new Bookstore.Book { Title = "new book", NumberOfPages = 201, Code = "A+" });
-            
+
+                // homework
+
+                //Load
+                var books = repository.Bookstore.Book.Load();
+                var authors = repository.Bookstore.Person.Load();
+
+                // left join
+                var result = from book in books
+                             join author in authors on book.AuthorID equals author.ID into bookAuthor
+                             from subAuthor in bookAuthor.DefaultIfEmpty()
+                             select new { book.Title, AuthorName = subAuthor?.Name ?? "" }.Dump();
+                // inner join
+                var booksWithAuthors = books.Join(repository.Bookstore.Person.Load(), currentBook => currentBook.AuthorID, author => author.ID, (currentBook, author) => new { currentBook.Title, author.Name }).Dump();
+
+                //Query
+                var booksWithAuthorsQuery = repository.Bookstore.Book.Query().Select(b => new { b.Title, b.Author.Name }).Dump();
+
 
                 // Query data from the `Common.Claim` table:
 
