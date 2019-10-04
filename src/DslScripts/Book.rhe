@@ -53,10 +53,7 @@ Module Bookstore
         {
             AllowRead Everyone 'context => 
             {
-                 var myBookId = context.Repository.Bookstore.Employee.Query()
-                .Where(e => e.Name == context.UserInfo.UserName)
-                .Select(e => e.Book.ID).SingleOrDefault();
-                return item => item.ID == myBookId || item.ID != myBookId;
+                return item => item.ID != null;
             }';
 
             AllowWrite AsignedToBook 'context => 
