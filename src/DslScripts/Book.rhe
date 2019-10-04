@@ -205,12 +205,14 @@ Module Bookstore
     "
     {}
 
-    //SqlQueryable NoAuthorBooks
-   // ""
-    //{
-        //SqlView Bookstore.BooksWithNoAuthors;
+    SqlQueryable NoAuthorBooks
+    "
+        select top(3) *
+        from Bookstore.BooksWithNoAuthors bna    
+    "
+    {
 
-   // }
+    }
    
 }
 
