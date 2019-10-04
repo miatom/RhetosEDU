@@ -74,6 +74,12 @@ namespace Bookstore.Playground
                 composableQuery.ToString().Dump();
                 composableQuery.ToSimple().ToList().Dump();
 
+                var complex = new Bookstore.ComplexSearch();
+                complex.NumberOfPages = 20;
+                complex.IsForeignBook = true;
+                var complexQuery = repository.Bookstore.Book.Load(complex);
+                complexQuery.Dump();
+
 
 
 

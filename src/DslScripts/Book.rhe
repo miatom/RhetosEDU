@@ -61,6 +61,16 @@ Module Bookstore
             return query.Where(item => item.NumberOfPages >= 50);
         }';
 
+        FilterBy ComplexSearch '(repository, parameter) => 
+        {
+            var query = repository.Bookstore.Book.Query(item => item.NumberOfPages >= parameter.NumberOfPages);
+            if(parameter.IsForeignBook == true)
+            {
+                query = query.Where(item => item.Extension_ForeignBook.ID != null && item.Author.Name != null);
+            }
+            return query.ToSimple().ToArray();;
+        }';
+
         
         Lock ContainsLockMark 'Name contains lock mark.';
 
@@ -73,6 +83,12 @@ Module Bookstore
     }
 
     Parameter BooksWithMoreThan50Pages {}
+
+    Parameter ComplexSearch
+    {
+        Integer NumberOfPages;
+        Bool IsForeignBook;
+    }
 
     Parameter CommonMisspelling2 
     {
