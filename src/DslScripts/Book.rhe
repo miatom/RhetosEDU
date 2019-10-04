@@ -49,6 +49,18 @@ Module Bookstore
         DateTime CreatedAt { CreationTime;  DenyUserEdit; }
         Reference Author Bookstore.Person;
 
+        RowPermissions 
+        {
+            AllowWrite AsignedToBook 'context => 
+            {
+                var myBookId = context.Repository.Bookstore.Employee.Query()
+                .Where(e => e.Name == context.UserInfo.UserName)
+                .Select(e => e.Book.ID).SingleOrDefault();
+                return item => item.ID == myBookId;
+
+            }';
+        }
+
         ItemFilter ContainsLetter 'item => item.Author.Name.StartsWith("P") && item.Extension_ForeignBook.ID != null';
         ItemFilter BooksWithMoreThan100Pages'item => item.NumberOfPages >= 100';
         ItemFilter ContainsLockMark 'item => item.Title.Contains("Croatian")';
@@ -110,6 +122,18 @@ Module Bookstore
         Reference Book { Detail; }
         LongString Text { DefaultValue 'item => "comment"'; }
         DateTime ModifiedAt { ModificationTimeOf Bookstore.Comment.Text; }
+
+         RowPermissions 
+        {
+            AllowWrite AsignedToBookComments 'context => 
+            {
+                var myBookId = context.Repository.Bookstore.Employee.Query()
+                .Where(e => e.Name == context.UserInfo.UserName)
+                .Select(e => e.Book.ID).SingleOrDefault();
+                return  item => item.BookID == myBookId;
+
+            }';
+        }
 
         Logging 
         {
