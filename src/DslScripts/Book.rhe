@@ -48,7 +48,20 @@ Module Bookstore
         DateTime CreatedAt { CreationTime;  DenyUserEdit; }
         Reference Author Bookstore.Person;
 
+        ItemFilter ContainsLetter 'item => item.Author.Name.StartsWith("P") && item.Extension_ForeignBook.ID != null';
+        ItemFilter BooksWithMoreThan100Pages 'item => item.NumberOfPages >= 100';
         ItemFilter ContainsLockMark 'item => item.Title.Contains("Croatian")';
+
+        //ComposableFilterBy CommonMisspelling2 '(query, repository, parameter) => {
+            //return query.Where(book.Title.Contains(parameter.KeyWord));
+        //}';
+
+        ComposableFilterBy BooksWithMoreThan50Pages '(query, repository, parameter) => 
+        {
+            return query.Where(item => item.NumberOfPages >= 50);
+        }';
+
+        
         Lock ContainsLockMark 'Name contains lock mark.';
 
         Logging 
@@ -57,6 +70,13 @@ Module Bookstore
             Log Bookstore.Book.NumberOfPages;
         }
         
+    }
+
+    Parameter BooksWithMoreThan50Pages {}
+
+    Parameter CommonMisspelling2 
+    {
+        ShortString KeyWord;
     }
 
     Entity Person
