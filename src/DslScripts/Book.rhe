@@ -53,7 +53,7 @@ Module Bookstore
         {
             AllowRead Everyone 'context => 
             {
-                return item => item.ID != null;
+                return item => true;
             }';
 
             AllowWrite AsignedToBook 'context => 
@@ -130,6 +130,12 @@ Module Bookstore
 
          RowPermissions 
         {
+
+            AllowRead ToEveryone 'context => 
+            {
+                return item => true;
+            }';
+
             AllowWrite AsignedToBookComments 'context => 
             {
                 var myBookId = context.Repository.Bookstore.Employee.Query()
