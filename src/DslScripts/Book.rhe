@@ -40,6 +40,7 @@
 
 Module Bookstore
 {
+    AutodetectSqlDependencies;
     Entity Book
     {
         ShortString Code { AutoCode; }
@@ -195,6 +196,21 @@ Module Bookstore
         Take 'Author.Name';
         Take NumberOfTopics 'Extension_BookInfoTopics.NumberOfTopics';
     }
+
+    SqlView BooksWithNoAuthors
+    "
+        select b.Title, b.Code, b.NumberOfPages
+        from BookStore.Book b
+        where b.AuthorID is null
+    "
+    {}
+
+    //SqlQueryable NoAuthorBooks
+   // ""
+    //{
+        //SqlView Bookstore.BooksWithNoAuthors;
+
+   // }
    
 }
 
