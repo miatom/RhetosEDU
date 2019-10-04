@@ -69,7 +69,8 @@ namespace Bookstore.Playground
                 query.ToString().Dump();
                 query.ToSimple().ToList().Dump();
 
-                var composableFilterParameter = new Bookstore.BooksWithMoreThan50Pages();
+                var composableFilterParameter = new Bookstore.BooksWithMoreThanPages();
+                composableFilterParameter.NumberOfPages = 200;
                 var composableQuery = repository.Bookstore.Book.Query(composableFilterParameter);
                 composableQuery.ToString().Dump();
                 composableQuery.ToSimple().ToList().Dump();

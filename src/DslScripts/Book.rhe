@@ -49,16 +49,16 @@ Module Bookstore
         Reference Author Bookstore.Person;
 
         ItemFilter ContainsLetter 'item => item.Author.Name.StartsWith("P") && item.Extension_ForeignBook.ID != null';
-        ItemFilter BooksWithMoreThan100Pages 'item => item.NumberOfPages >= 100';
+        ItemFilter BooksWithMoreThan100Pages'item => item.NumberOfPages >= 100';
         ItemFilter ContainsLockMark 'item => item.Title.Contains("Croatian")';
 
         //ComposableFilterBy CommonMisspelling2 '(query, repository, parameter) => {
             //return query.Where(book.Title.Contains(parameter.KeyWord));
         //}';
 
-        ComposableFilterBy BooksWithMoreThan50Pages '(query, repository, parameter) => 
+        ComposableFilterBy BooksWithMoreThanPages '(query, repository, parameter) => 
         {
-            return query.Where(item => item.NumberOfPages >= 50);
+            return query.Where(item => item.NumberOfPages >= parameter.NumberOfPages);
         }';
 
         FilterBy ComplexSearch '(repository, parameter) => 
@@ -82,7 +82,10 @@ Module Bookstore
         
     }
 
-    Parameter BooksWithMoreThan50Pages {}
+    Parameter BooksWithMoreThanPages 
+    {
+        Integer NumberOfPages;
+    }
 
     Parameter ComplexSearch
     {
