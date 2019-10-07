@@ -40,6 +40,7 @@
 
 Module Bookstore
 {
+    AutodetectSqlDependencies;
     Entity Book
     {
         ShortString Code { AutoCode; }
@@ -48,7 +49,47 @@ Module Bookstore
         DateTime CreatedAt { CreationTime;  DenyUserEdit; }
         Reference Author Bookstore.Person;
 
+        RowPermissions 
+        {
+            AllowRead Everyone 'context => 
+            {
+                return item => true;
+            }';
+
+            AllowWrite AsignedToBook 'context => 
+            {
+                var myBookId = context.Repository.Bookstore.Employee.Query()
+                .Where(e => e.Name == context.UserInfo.UserName)
+                .Select(e => e.Book.ID).SingleOrDefault();
+                return item => item.ID == myBookId;
+
+            }';
+        }
+
+        ItemFilter ContainsLetter 'item => item.Author.Name.StartsWith("P") && item.Extension_ForeignBook.ID != null';
+        ItemFilter BooksWithMoreThan100Pages'item => item.NumberOfPages >= 100';
         ItemFilter ContainsLockMark 'item => item.Title.Contains("Croatian")';
+
+        //ComposableFilterBy CommonMisspelling2 '(query, repository, parameter) => {
+            //return query.Where(book.Title.Contains(parameter.KeyWord));
+        //}';
+
+        ComposableFilterBy BooksWithMoreThanPages '(query, repository, parameter) => 
+        {
+            return query.Where(item => item.NumberOfPages >= parameter.NumberOfPages);
+        }';
+
+        FilterBy ComplexSearch '(repository, parameter) => 
+        {
+            var query = repository.Bookstore.Book.Query(item => item.NumberOfPages >= parameter.NumberOfPages);
+            if(parameter.IsForeignBook == true)
+            {
+                query = query.Where(item => item.Extension_ForeignBook.ID != null && item.Author.Name != null);
+            }
+            return query.ToSimple().ToArray();;
+        }';
+
+        
         Lock ContainsLockMark 'Name contains lock mark.';
 
         Logging 
@@ -57,6 +98,22 @@ Module Bookstore
             Log Bookstore.Book.NumberOfPages;
         }
         
+    }
+
+    Parameter BooksWithMoreThanPages 
+    {
+        Integer NumberOfPages;
+    }
+
+    Parameter ComplexSearch
+    {
+        Integer NumberOfPages;
+        Bool IsForeignBook;
+    }
+
+    Parameter CommonMisspelling2 
+    {
+        ShortString KeyWord;
     }
 
     Entity Person
@@ -70,6 +127,24 @@ Module Bookstore
         Reference Book { Detail; }
         LongString Text { DefaultValue 'item => "comment"'; }
         DateTime ModifiedAt { ModificationTimeOf Bookstore.Comment.Text; }
+
+         RowPermissions 
+        {
+
+            AllowRead ToEveryone 'context => 
+            {
+                return item => true;
+            }';
+
+            AllowWrite AsignedToBookComments 'context => 
+            {
+                var myBookId = context.Repository.Bookstore.Employee.Query()
+                .Where(e => e.Name == context.UserInfo.UserName)
+                .Select(e => e.Book.ID).SingleOrDefault();
+                return  item => item.BookID == myBookId;
+
+            }';
+        }
 
         Logging 
         {
@@ -155,6 +230,23 @@ Module Bookstore
         Take CreatedAt;
         Take 'Author.Name';
         Take NumberOfTopics 'Extension_BookInfoTopics.NumberOfTopics';
+    }
+
+    SqlView BooksWithNoAuthors
+    "
+        select b.Title, b.Code, b.NumberOfPages
+        from BookStore.Book b
+        where b.AuthorID is null
+    "
+    {}
+
+    SqlQueryable NoAuthorBooks
+    "
+        select top(3) *
+        from Bookstore.BooksWithNoAuthors bna    
+    "
+    {
+
     }
    
 }

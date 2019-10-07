@@ -63,6 +63,25 @@ namespace Bookstore.Playground
                 var booksWithAuthorsSqlQuery = repository.Bookstore.Book.Query().Select(b => new { b.Title, b.Author.Name }).ToString().Dump();
 
 
+                // homework 3
+                var filterParameter = new Bookstore.BooksWithMoreThan100Pages();
+                var query = repository.Bookstore.Book.Query(filterParameter);
+                query.ToString().Dump();
+                query.ToSimple().ToList().Dump();
+
+                var composableFilterParameter = new Bookstore.BooksWithMoreThanPages();
+                composableFilterParameter.NumberOfPages = 200;
+                var composableQuery = repository.Bookstore.Book.Query(composableFilterParameter);
+                composableQuery.ToString().Dump();
+                composableQuery.ToSimple().ToList().Dump();
+
+                var complex = new Bookstore.ComplexSearch();
+                complex.NumberOfPages = 20;
+                complex.IsForeignBook = true;
+                var complexQuery = repository.Bookstore.Book.Load(complex);
+                complexQuery.Dump();
+
+
 
 
 
