@@ -181,6 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LastModificationTimeInfo.cs" />
+    <Compile Include="MonitoredRecordInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
