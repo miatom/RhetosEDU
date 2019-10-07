@@ -99,14 +99,14 @@ Module Bookstore
             Log Bookstore.Book.NumberOfPages;
         }
 
-        SaveMethod 
-        {
-            Initialization SaveModificationDate
-            '
-                foreach(var item in insertedNew.Concat(updatedNew))
-                   item.LastModification = DateTime.Now;
-            ';
-        }
+        //SaveMethod 
+        //{
+            //Initialization SaveModificationDate
+           // '
+                //foreach(var item in insertedNew.Concat(updatedNew))
+                   //item.LastModification = DateTime.Now;
+            //';
+        //}
 
         
     }
