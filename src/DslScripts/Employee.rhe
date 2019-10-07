@@ -23,8 +23,10 @@ Module Bookstore
 
     Entity Department
     {
+        
         ShortString Code { Unique; Required; }
         ShortString Description;
+        MonitoredRecord;
 
     }
 

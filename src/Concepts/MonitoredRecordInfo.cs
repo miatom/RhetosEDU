@@ -46,10 +46,8 @@ namespace Concepts
             });
 
             // Logging
-            var loggingInfo = new EntityLoggingInfo
-            {
-                Entity = conceptInfo.Entity
-            };
+            var loggingInfo = new EntityLoggingInfo { Entity = conceptInfo.Entity };
+            newConcepts.Add(loggingInfo);
             newConcepts.Add(new AllPropertiesLoggingInfo { EntityLogging = loggingInfo });
 
             return newConcepts;
