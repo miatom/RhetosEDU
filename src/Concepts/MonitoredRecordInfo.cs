@@ -1,11 +1,7 @@
 ﻿using Rhetos.Dsl;
 using Rhetos.Dsl.DefaultConcepts;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Concepts
 {
@@ -17,6 +13,7 @@ namespace Concepts
         public EntityInfo Entity { get; set; }
     }
 
+    [Export(typeof(IConceptMacro))]
     public class MonitoredRecordMacro : IConceptMacro<MonitoredRecordInfo>
     {
         public IEnumerable<IConceptInfo> CreateNewConcepts(MonitoredRecordInfo conceptInfo, IDslModel existingConcepts)
