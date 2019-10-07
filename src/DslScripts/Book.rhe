@@ -47,6 +47,7 @@ Module Bookstore
         ShortString Title { Required; }
         Integer NumberOfPages { MinValue 10; MaxValue 2000;}
         DateTime CreatedAt { CreationTime;  DenyUserEdit; }
+        DateTime LastModification { LastModificationTime; }
         Reference Author Bookstore.Person;
 
         RowPermissions 
@@ -97,6 +98,16 @@ Module Bookstore
             Log Bookstore.Book.Title;
             Log Bookstore.Book.NumberOfPages;
         }
+
+        SaveMethod 
+        {
+            Initialization SaveModificationDate
+            '
+                foreach(var item in insertedNew.Concat(updatedNew))
+                   item.LastModification = DateTime.Now;
+            ';
+        }
+
         
     }
 
