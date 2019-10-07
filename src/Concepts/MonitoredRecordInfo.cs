@@ -48,6 +48,13 @@ namespace Concepts
                 Property = createdAtProperty
             });
 
+            // Logging
+            var loggingInfo = new EntityLoggingInfo
+            {
+                Entity = conceptInfo.Entity
+            };
+            newConcepts.Add(new AllPropertiesLoggingInfo { EntityLogging = loggingInfo });
+
             return newConcepts;
         }
     }
