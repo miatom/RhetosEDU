@@ -47,6 +47,7 @@ Module Bookstore
         ShortString Title { Required; }
         Integer NumberOfPages { MinValue 10; MaxValue 2000;}
         DateTime CreatedAt { CreationTime;  DenyUserEdit; }
+        DateTime LastModification { LastModificationTime; }
         Reference Author Bookstore.Person;
 
         RowPermissions 
@@ -97,6 +98,16 @@ Module Bookstore
             Log Bookstore.Book.Title;
             Log Bookstore.Book.NumberOfPages;
         }
+
+        //SaveMethod 
+        //{
+            //Initialization SaveModificationDate
+           // '
+                //foreach(var item in insertedNew.Concat(updatedNew))
+                   //item.LastModification = DateTime.Now;
+            //';
+        //}
+
         
     }
 
@@ -145,6 +156,7 @@ Module Bookstore
 
             }';
         }
+       
 
         Logging 
         {
@@ -173,6 +185,7 @@ Module Bookstore
     Entity Topic
     {
         ShortString Name { Unique; Required; }
+        Logging { AllProperties; }
     }    
 
     Entity BookTopic
@@ -234,7 +247,7 @@ Module Bookstore
 
     SqlView BooksWithNoAuthors
     "
-        select b.Title, b.Code, b.NumberOfPages
+        select b.ID, b.Title, b.Code, b.NumberOfPages
         from BookStore.Book b
         where b.AuthorID is null
     "
@@ -246,7 +259,9 @@ Module Bookstore
         from Bookstore.BooksWithNoAuthors bna    
     "
     {
-
+         ShortString Title;
+         ShortString Code;
+         Integer NumberOfPages;
     }
    
 }
