@@ -247,7 +247,7 @@ Module Bookstore
 
     SqlView BooksWithNoAuthors
     "
-        select b.Title, b.Code, b.NumberOfPages
+        select b.ID, b.Title, b.Code, b.NumberOfPages
         from BookStore.Book b
         where b.AuthorID is null
     "
@@ -259,7 +259,9 @@ Module Bookstore
         from Bookstore.BooksWithNoAuthors bna    
     "
     {
-
+         ShortString Title;
+         ShortString Code;
+         Integer NumberOfPages;
     }
    
 }
