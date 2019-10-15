@@ -45,7 +45,7 @@ Module Bookstore
     {
         ShortString Code { AutoCode; }
         ShortString Title { Required; }
-        Integer NumberOfPages { MinValue 10; MaxValue 2000;}
+        Integer BrojStranica { MinValue 10; MaxValue 2000;}
         DateTime CreatedAt { CreationTime;  DenyUserEdit; }
         DateTime LastModification { LastModificationTime; }
         Reference Author Bookstore.Person;
@@ -69,36 +69,36 @@ Module Bookstore
         }
 
         ItemFilter ContainsLetter 'item => item.Author.Name.StartsWith("P") && item.Extension_ForeignBook.ID != null';
-        ItemFilter BooksWithMoreThan100Pages'item => item.NumberOfPages >= 100';
+        //ItemFilter BooksWithMoreThan100Pages'item => item.NumberOfPages >= 100';
         ItemFilter ContainsLockMark 'item => item.Title.Contains("Croatian")';
 
         //ComposableFilterBy CommonMisspelling2 '(query, repository, parameter) => {
             //return query.Where(book.Title.Contains(parameter.KeyWord));
         //}';
 
-        ComposableFilterBy BooksWithMoreThanPages '(query, repository, parameter) => 
-        {
-            return query.Where(item => item.NumberOfPages >= parameter.NumberOfPages);
-        }';
+        // ComposableFilterBy BooksWithMoreThanPages '(query, repository, parameter) => 
+        // {
+        //     return query.Where(item => item.NumberOfPages >= parameter.NumberOfPages);
+        // }';
 
-        FilterBy ComplexSearch '(repository, parameter) => 
-        {
-            var query = repository.Bookstore.Book.Query(item => item.NumberOfPages >= parameter.NumberOfPages);
-            if(parameter.IsForeignBook == true)
-            {
-                query = query.Where(item => item.Extension_ForeignBook.ID != null && item.Author.Name != null);
-            }
-            return query.ToSimple().ToArray();;
-        }';
+        // FilterBy ComplexSearch '(repository, parameter) => 
+        // {
+        //     var query = repository.Bookstore.Book.Query(item => item.NumberOfPages >= parameter.NumberOfPages);
+        //     if(parameter.IsForeignBook == true)
+        //     {
+        //         query = query.Where(item => item.Extension_ForeignBook.ID != null && item.Author.Name != null);
+        //     }
+        //     return query.ToSimple().ToArray();;
+        // }';
 
         
-        Lock ContainsLockMark 'Name contains lock mark.';
+        // Lock ContainsLockMark 'Name contains lock mark.';
 
-        Logging 
-        {
-            Log Bookstore.Book.Title;
-            Log Bookstore.Book.NumberOfPages;
-        }
+        // Logging 
+        // {
+        //     Log Bookstore.Book.Title;
+        //     Log Bookstore.Book.NumberOfPages;
+        // }
 
         //SaveMethod 
         //{
@@ -112,16 +112,16 @@ Module Bookstore
         
     }
 
-    Parameter BooksWithMoreThanPages 
-    {
-        Integer NumberOfPages;
-    }
+    // Parameter BooksWithMoreThanPages 
+    // {
+    //     Integer NumberOfPages;
+    // }
 
-    Parameter ComplexSearch
-    {
-        Integer NumberOfPages;
-        Bool IsForeignBook;
-    }
+    // Parameter ComplexSearch
+    // {
+    //     Integer NumberOfPages;
+    //     Bool IsForeignBook;
+    // }
 
     Parameter CommonMisspelling2 
     {
@@ -225,33 +225,33 @@ Module Bookstore
         AutodetectSqlDependencies;
     }
 
-    Browse BooksWithTopics Bookstore.Book
-    {
-        Take Title;
-        Take NumberOfPages;
-        Take CreatedAt;
-        Take 'Author.Name';
-        Take NumberOfTopics 'Extension_BookInfoTopics.NumberOfTopics';
-    }
+    // Browse BooksWithTopics Bookstore.Book
+    // {
+    //     Take Title;
+    //     Take NumberOfPages;
+    //     Take CreatedAt;
+    //     Take 'Author.Name';
+    //     Take NumberOfTopics 'Extension_BookInfoTopics.NumberOfTopics';
+    // }
 
-    SqlView BooksWithNoAuthors
-    "
-        select b.ID, b.Title, b.Code, b.NumberOfPages
-        from BookStore.Book b
-        where b.AuthorID is null
-    "
-    {}
+    // SqlView BooksWithNoAuthors
+    // "
+    //     select b.ID, b.Title, b.Code, b.NumberOfPages
+    //     from BookStore.Book b
+    //     where b.AuthorID is null
+    // "
+    // {}
 
-    SqlQueryable NoAuthorBooks
-    "
-        select top(3) *
-        from Bookstore.BooksWithNoAuthors bna    
-    "
-    {
-         ShortString Title;
-         ShortString Code;
-         Integer NumberOfPages;
-    }
+    // SqlQueryable NoAuthorBooks
+    // "
+    //     select top(3) *
+    //     from Bookstore.BooksWithNoAuthors bna    
+    // "
+    // {
+    //      ShortString Title;
+    //      ShortString Code;
+    //      Integer NumberOfPages;
+    // }
    
 }
 

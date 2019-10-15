@@ -16,6 +16,7 @@
   </metadata>
   <files>
     <file src="DslScripts\**\*" target="DslScripts" />
+    <file src="DataMigration\**\*" target="DataMigration" />
     <file src="Concepts\bin\Debug\Concepts.pdb" target="lib\net451" />
     <file src="Concepts\bin\Debug\Concepts.dll" target="lib\net451" />
   </files>
