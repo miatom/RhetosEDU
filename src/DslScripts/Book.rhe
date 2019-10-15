@@ -50,6 +50,7 @@ Module Bookstore
         DateTime LastModification { LastModificationTime; }
         Reference Author Bookstore.Person;
         Reference Employee;
+      
 
         RowPermissions 
         {
@@ -166,6 +167,7 @@ Module Bookstore
         Extends Bookstore.Book;
 
         ShortString OriginalLanguage;
+        ShortString OriginalTitle;
         Reference Translator Bookstore.Person;
 
        
