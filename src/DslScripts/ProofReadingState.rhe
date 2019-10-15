@@ -11,7 +11,8 @@ Module Bookstore
 
     SqlQueryable ComputeProofReadingCurrentState
     "
-       SELECT pr.ID, lastEvent.NewStatusID
+       SELECT pr.ID, 
+       StatusID = lastEvent.NewStatusID
        FROM Bookstore.ProofReading pr
        OUTER APPLY (
            SELECT TOP 1 *
@@ -30,6 +31,14 @@ Module Bookstore
         ChangesOnLinkedItems Bookstore.ReadingRejected.ProofReading;
 
         AutodetectSqlDependencies;
+    }
 
+    Entity ReadingCurrentState 
+    {
+        ComputedFrom Bookstore.ComputeProofReadingCurrentState
+        {
+            KeepSynchronized;
+            AllProperties;
+        }
     }
 }

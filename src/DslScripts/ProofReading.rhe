@@ -24,7 +24,7 @@ Module Bookstore
     {
         Take Lector;
         Take ReadingDate;
-        //Take CurrentStatus 'Extension_ProofReading'
+        Take CurrentStatus 'Extension_ReadingCurrentState.Status.Name';
     }
 
 
