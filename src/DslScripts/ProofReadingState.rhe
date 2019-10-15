@@ -1,0 +1,10 @@
+Module Bookstore
+{
+    Hardcoded ProofReadingStatus
+    {
+        Entry Started;
+        Entry Finished;
+        Entry Rejected;
+        Entry Approved;
+    }
+}

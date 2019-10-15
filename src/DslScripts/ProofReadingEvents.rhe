@@ -1,0 +1,9 @@
+Module Bookstore 
+{
+    Polymorphic ProofReadingEvent
+    {
+        DateTime EventStarted;
+        Reference ProofReading;
+        Reference NewStatus Bookstore.ProofReadingStatus;
+    }
+}

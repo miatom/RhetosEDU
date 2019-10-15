@@ -1,0 +1,11 @@
+Module Bookstore
+{
+    Entity ProofReading
+    {
+        ShortString Lector;
+        DateTime ReadingDate;
+        DateTime CreatedAt { CreationTime; }
+    }
+    
+
+}
