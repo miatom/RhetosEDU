@@ -6,4 +6,52 @@ Module Bookstore
         Reference ProofReading;
         Reference NewStatus Bookstore.ProofReadingStatus;
     }
+
+    Entity ReadingStarted
+    {
+        DateTime EventStarted { CreationTime; }
+        Reference ProofReading;
+
+        Is Bookstore.ProofReadingEvent
+        {
+            Implements Bookstore.ProofReadingEvent.NewStatus "Bookstore.ProofReadingStatus_Started()";
+        }
+    }
+
+    Entity ReadingFinished
+    {
+        DateTime EventStarted { CreationTime; }
+        Reference ProofReading;
+
+        Is Bookstore.ProofReadingEvent
+        {
+            Implements Bookstore.ProofReadingEvent.NewStatus "Bookstore.ProofReadingStatus_Finished()";
+        }
+    }
+
+    Entity ReadingApproved
+    {
+        DateTime EventStarted { CreationTime; }
+        Reference ProofReading;
+
+        LongString Description { Required; }
+
+        Is Bookstore.ProofReadingEvent
+        {
+            Implements Bookstore.ProofReadingEvent.NewStatus "Bookstore.ProofReadingStatus_Approved()";
+        }
+    }
+
+    Entity ReadingRejected
+    {
+        DateTime EventStarted { CreationTime; }
+        Reference ProofReading;
+
+        LongString Explanation { Required; }
+
+        Is Bookstore.ProofReadingEvent
+        {
+            Implements Bookstore.ProofReadingEvent.NewStatus "Bookstore.ProofReadingStatus_Rejected()";
+        }
+    }
 }
