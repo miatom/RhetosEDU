@@ -5,7 +5,27 @@ Module Bookstore
         ShortString Lector;
         DateTime ReadingDate;
         DateTime CreatedAt { CreationTime; }
+
+        Is Bookstore.ProofReadingEvent 'Creating'
+        {
+            Implements Bookstore.ProofReadingEvent.EventStarted "CreatedAt";
+            Implements Bookstore.ProofReadingEvent.ProofReading "ID";
+            Implements Bookstore.ProofReadingEvent.NewStatus "Bookstore.ProofReadingStatus_Created()";
+        }
     }
-    
+
+    Entity ProofReadingItem
+    {
+        Reference ProofReading { Detail; }
+        Reference Book;
+    }
+
+    Browse ProofReadingGrid Bookstore.ProofReading
+    {
+        Take Lector;
+        Take ReadingDate;
+        //Take CurrentStatus 'Extension_ProofReading'
+    }
+
 
 }

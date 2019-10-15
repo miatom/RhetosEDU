@@ -2,9 +2,20 @@ Module Bookstore
 {
     Hardcoded ProofReadingStatus
     {
+        Entry Created;
         Entry Started;
         Entry Finished;
         Entry Rejected;
         Entry Approved;
     }
+
+    //SqlQueryable ComputeProofReadingCurrentState
+    //"
+       //SELECT *
+      // FROM 
+       //Bookstore.ProofReading
+    //"
+        //{
+
+        //}
 }
