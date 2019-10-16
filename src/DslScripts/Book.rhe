@@ -49,6 +49,7 @@ Module Bookstore
         DateTime CreatedAt { CreationTime;  DenyUserEdit; }
         DateTime LastModification { LastModificationTime; }
         Reference Author Bookstore.Person;
+        Reference Employee;
 
         RowPermissions 
         {
@@ -59,10 +60,10 @@ Module Bookstore
 
             AllowWrite AsignedToBook 'context => 
             {
-                var myBookId = context.Repository.Bookstore.Employee.Query()
+                var employeeId = context.Repository.Bookstore.Employee.Query()
                 .Where(e => e.Name == context.UserInfo.UserName)
-                .Select(e => e.Book.ID).SingleOrDefault();
-                return item => item.ID == myBookId;
+                .Select(e => e.ID).SingleOrDefault();
+                return item => item.Employee.ID == employeeId;
 
             }';
         }
@@ -142,19 +143,7 @@ Module Bookstore
          RowPermissions 
         {
 
-            AllowRead ToEveryone 'context => 
-            {
-                return item => true;
-            }';
-
-            AllowWrite AsignedToBookComments 'context => 
-            {
-                var myBookId = context.Repository.Bookstore.Employee.Query()
-                .Where(e => e.Name == context.UserInfo.UserName)
-                .Select(e => e.Book.ID).SingleOrDefault();
-                return  item => item.BookID == myBookId;
-
-            }';
+           InheritFrom Bookstore.Comment.Book;
         }
        
 
