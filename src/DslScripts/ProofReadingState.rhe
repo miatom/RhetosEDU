@@ -1,0 +1,44 @@
+Module Bookstore
+{
+    Hardcoded ProofReadingStatus
+    {
+        Entry Created;
+        Entry Started;
+        Entry Finished;
+        Entry Rejected;
+        Entry Approved;
+    }
+
+    SqlQueryable ComputeProofReadingCurrentState
+    "
+       SELECT pr.ID, 
+       StatusID = lastEvent.NewStatusID
+       FROM Bookstore.ProofReading pr
+       OUTER APPLY (
+           SELECT TOP 1 *
+           FROM Bookstore.ProofReadingEvent pfe
+           WHERE pfe.ProofReadingID = pr.ID
+           ORDER BY pfe.EventStarted DESC
+           ) lastEvent
+    "
+    {
+        Extends Bookstore.ProofReading;
+        Reference Status Bookstore.ProofReadingStatus;
+
+        ChangesOnLinkedItems Bookstore.ReadingStarted.ProofReading;
+        ChangesOnLinkedItems Bookstore.ReadingFinished.ProofReading;
+        ChangesOnLinkedItems Bookstore.ReadingApproved.ProofReading;
+        ChangesOnLinkedItems Bookstore.ReadingRejected.ProofReading;
+
+        AutodetectSqlDependencies;
+    }
+
+    Entity ReadingCurrentState 
+    {
+        ComputedFrom Bookstore.ComputeProofReadingCurrentState
+        {
+            KeepSynchronized;
+            AllProperties;
+        }
+    }
+}

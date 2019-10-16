@@ -4,7 +4,7 @@ Module Bookstore
     {
         ShortString Name { Required; }
         ShortString Vat { Autocode; Required; }
-        Reference Book;
+        
     }
 
     Entity Manager
