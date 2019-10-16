@@ -194,23 +194,23 @@ Module Bookstore
         Take TranslatorName 'Extension_ForeignBook.Translator.Name';
     }
 
-    SqlQueryable BookInfo 
-    "
-        SELECT
-            b.ID,
-            NumberOfComments = COUNT(c.ID)
-        FROM
-            Bookstore.Book b
-            LEFT JOIN Bookstore.Comment c ON c.BookID = b.ID
-        GROUP BY
-            b.ID
-    "
-    {
-        Extends Bookstore.Book;
-        Integer NumberOfComments;
+    // SqlQueryable BookInfo 
+    // "
+    //     SELECT
+    //         b.ID,
+    //         NumberOfComments = COUNT(c.ID)
+    //     FROM
+    //         Bookstore.Book b
+    //         LEFT JOIN Bookstore.Comment c ON c.BookID = b.ID
+    //     GROUP BY
+    //         b.ID
+    // "
+    // {
+    //     Extends Bookstore.Book;
+    //     Integer NumberOfComments;
 
-        AutodetectSqlDependencies;
-    }
+    //     AutodetectSqlDependencies;
+    // }
 
     SqlQueryable BookInfoTopics
     "
@@ -254,6 +254,31 @@ Module Bookstore
     //      ShortString Code;
     //      Integer NumberOfPages;
     // }
+
+    SqlQueryable ComputeBookInfo
+   "
+       SELECT
+           b.ID,
+           NumberOfComments = COUNT(bc.ID)
+       FROM
+           Bookstore.Book b
+           LEFT JOIN Bookstore.Comment bc ON bc.BookID = b.ID
+       GROUP BY
+           b.ID
+   "
+   {
+       Extends Bookstore.Book;
+       Integer NumberOfComments;
+       ChangesOnLinkedItems Bookstore.Comment.Book;
+   }
+   Entity BookInfo
+   {
+       ComputedFrom Bookstore.ComputeBookInfo
+       {
+           AllProperties;
+           KeepSynchronized;
+       }
+   }
    
 }
 
